@@ -30,10 +30,9 @@
   --shadow-accent: 0 4px 28px rgba(249,115,22,0.30);
 
   /* ── Tertiary ── */
-  --gold:          #e8417a;
-  --gold-soft:     rgba(232,65,122,0.14);
-  --gold-glow:     rgba(232,65,122,0.22);
-
+    --gold:          #f97316;
+  --gold-soft:     rgba(249,115,22,0.14);
+  --gold-glow:     rgba(249,115,22,0.22);
   /* ── Text ── */
   --text-1: #ffffff;
   --text-2: #a0a0b0;
