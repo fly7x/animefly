@@ -10,9 +10,9 @@ import SettingsPanel from "@/components/SettingsPanel";
 
 function FlyAnimeIcon() {
   return (
-    <svg width="56" height="32" viewBox="0 0 56 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <text x="0" y="26" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="28" fill="#e8417a">F</text>
-      <text x="20" y="26" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="28" fill="#7ee8f8">A</text>
+    <svg width="100" height="28" viewBox="0 0 100 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="22" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="22" fill="#f97316">Fly</text>
+      <text x="42" y="22" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="22" fill="#ffffff">Anime</text>
     </svg>
   );
 }
