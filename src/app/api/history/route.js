@@ -20,8 +20,13 @@ export async function POST(request) {
   const user = await getUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
 
-  const { anime_id, anime_name, poster, anilist_id, episode_number, finished } = await request.json();
+  const { anime_id, anime_name, poster, anilist_id, episode_number, finished, seconds_watched } = await request.json();
   const db = getDb();
+
+  // Only save to history if watched at least 10 seconds
+  if (!finished && (!seconds_watched || seconds_watched < 10)) {
+    return NextResponse.json({ success: true, skipped: true });
+  }
 
   await db.execute({
     sql: `INSERT INTO watch_history (user_id, anime_id, anime_name, poster, anilist_id, episode_number, updated_at)
@@ -31,7 +36,6 @@ export async function POST(request) {
     args: [user.id, anime_id, anime_name, poster, anilist_id, episode_number],
   });
 
-  // Only update streak/count if episode was actually finished
   if (!finished) return NextResponse.json({ success: true });
 
   const today = new Date().toISOString().slice(0, 10);
