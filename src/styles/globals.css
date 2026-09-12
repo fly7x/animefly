@@ -15,20 +15,19 @@
   --border-hi:     rgba(232,65,122,0.28);
   --border-purple: rgba(232,65,122,0.15);
 
-  /* ── Primary accent — Fly Anime pink ── */
-  --accent:        #e8417a;
-  --accent-hover:  #f0527f;
-  --accent-soft:   rgba(232,65,122,0.18);
-  --accent-glow:   rgba(232,65,122,0.32);
-  --accent-dim:    rgba(232,65,122,0.08);
-  --accent-deep:   #b02d5c;
-
-  /* ── Secondary ── */
-  --purple:        #e8417a;
-  --purple-hover:  #f0527f;
-  --purple-soft:   rgba(232,65,122,0.16);
-  --purple-glow:   rgba(232,65,122,0.28);
-  --purple-dim:    rgba(232,65,122,0.07);
+  --accent:        #f97316;
+  --accent-hover:  #ea6c0a;
+  --accent-soft:   rgba(249,115,22,0.18);
+  --accent-glow:   rgba(249,115,22,0.32);
+  --accent-dim:    rgba(249,115,22,0.08);
+  --accent-deep:   #c2570a;
+  --purple:        #f97316;
+  --purple-hover:  #ea6c0a;
+  --gold:          #f97316;
+  --border:        rgba(249,115,22,0.08);
+  --border-md:     rgba(249,115,22,0.16);
+  --border-hi:     rgba(249,115,22,0.28);
+  --shadow-accent: 0 4px 28px rgba(249,115,22,0.30);
 
   /* ── Tertiary ── */
   --gold:          #e8417a;
