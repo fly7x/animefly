@@ -182,35 +182,5 @@ export default function HomeClient({ initialData }) {
           )}
         </div>
       </div>
-
-      {/* Footer CTA */}
-      <div className={styles.abyssCta}>
-        <motion.div
-          className={styles.abyssCtaInner}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className={styles.abyssEyebrow}>Always Growing</p>
-          <h2 className={styles.abyssTitle}>Thousands Of Anime Await</h2>
-          <div className={styles.abyssBtns}>
-            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/browse?category=top-airing" className={styles.abyssBtn}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                Top Airing
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/search" className={styles.abyssSecondaryBtn}>
-                Search Thousands Of Anime →
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
   );
 }
