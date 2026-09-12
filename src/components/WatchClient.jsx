@@ -144,26 +144,33 @@ export default function WatchClient({ animeId, epSlug }) {
     try { localStorage.setItem("player_autonext", val ? "1" : "0"); } catch {}
   };
 
-  // ── Watch progress ─────────────────────────────────────────────────────────
-  const progressSaved = useRef(false);
-  useEffect(() => { progressSaved.current = false; }, [animeId, epSlug]);
+const watchStartRef = useRef(null);
 
-  // Add this useEffect to auto-save watch history
-// Save progress when episode changes (not finished)
+// Track when user starts watching
+useEffect(() => {
+  if (!animeId || !epNumber) return;
+  watchStartRef.current = Date.now();
+}, [animeId, epNumber]);
+
+// Save progress — only after 10 seconds
 useEffect(() => {
   if (!anime || !epNumber || !animeId) return;
-  fetch("/api/history", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      anime_id: animeId,
-      anime_name: anime.name,
-      poster: anime.poster || null,
-      anilist_id: String(anilistId || ""),
-      episode_number: epNumber,
-      finished: false,  // ← just tracking position, not finished
-    }),
-  }).catch(() => {});
+  const timer = setTimeout(() => {
+    fetch("/api/history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        anime_id: animeId,
+        anime_name: anime.name,
+        poster: anime.poster || null,
+        anilist_id: String(anilistId || ""),
+        episode_number: epNumber,
+        finished: false,
+        seconds_watched: 10,
+      }),
+    }).catch(() => {});
+  }, 10000); // wait 10 seconds before saving
+  return () => clearTimeout(timer);
 }, [animeId, epNumber, anime?.name]);
 
 
