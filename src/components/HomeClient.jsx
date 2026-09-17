@@ -181,6 +181,8 @@ export default function HomeClient({ initialData }) {
             </div>
           )}
         </div>
+
       </div>
+    </div>
   );
 }
