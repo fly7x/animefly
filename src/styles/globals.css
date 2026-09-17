@@ -341,3 +341,17 @@ input, select, textarea { font-family: var(--font-body); }
 @media (max-width: 640px) {
   .container { padding: 0 16px; }
 }
+
+/* ── PATCH: fix remaining duplicate/conflicting pink variables ── */
+:root {
+  --gold:          #f97316;
+  --gold-soft:     rgba(249,115,22,0.14);
+  --gold-glow:     rgba(249,115,22,0.22);
+  --border:        rgba(249,115,22,0.08);
+  --border-md:     rgba(249,115,22,0.16);
+  --border-hi:     rgba(249,115,22,0.28);
+  --border-purple: rgba(249,115,22,0.15);
+  --shadow-accent: 0 4px 28px rgba(249,115,22,0.30);
+  --shadow-purple: 0 4px 28px rgba(249,115,22,0.24);
+  --shadow-card:   0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(249,115,22,0.10);
+}
