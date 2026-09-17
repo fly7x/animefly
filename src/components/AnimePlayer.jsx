@@ -288,7 +288,7 @@ export default function AnimePlayer({
             <div style={css.ringWrap}>
               <svg width="64" height="64" viewBox="0 0 64 64">
                 <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4"/>
-                <circle cx="32" cy="32" r="28" fill="none" stroke="#e8417a" strokeWidth="4"
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--accent)" strokeWidth="4"
                   strokeDasharray={`${(nextCountdown / 5) * 175.9} 175.9`}
                   strokeLinecap="round"
                   style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%", transition: "stroke-dasharray 1s linear" }}
@@ -332,7 +332,7 @@ export default function AnimePlayer({
         >
           <div style={css.progressTrack}>
             <div style={{ ...css.progressFill, width: `${bufPct}%`, backgroundColor: "rgba(255,255,255,0.2)" }} />
-            <div style={{ ...css.progressFill, width: `${pct}%`, backgroundColor: "#e8417a" }} />
+            <div style={{ ...css.progressFill, width: `${pct}%`, backgroundColor: "var(--accent)" }} />
             {duration > 0 && skip.op && (
               <div style={{ ...css.chapterMark, left: `${(skip.op.start / duration) * 100}%`, width: `${((skip.op.end - skip.op.start) / duration) * 100}%` }} />
             )}
@@ -365,7 +365,7 @@ export default function AnimePlayer({
               value={muted ? 0 : volume}
               onChange={changeVolume}
               onClick={e => e.stopPropagation()}
-              style={{ width: "68px", accentColor: "#e8417a", cursor: "pointer" }}
+              style={{ width: "68px", accentColor: "var(--accent)", cursor: "pointer" }}
             />
 
             {/* Time */}
@@ -397,7 +397,7 @@ export default function AnimePlayer({
                     <div key={label} style={css.toggleRow}>
                       <span style={css.toggleLabel}>{label}</span>
                       <button
-                        style={{ ...css.toggleBtn, backgroundColor: val ? "#e8417a" : "rgba(255,255,255,0.1)" }}
+                        style={{ ...css.toggleBtn, backgroundColor: val ? "var(--accent)" : "rgba(255,255,255,0.1)" }}
                         onClick={() => set(v => !v)}
                       >
                         <div style={{ ...css.toggleThumb, transform: val ? "translateX(18px)" : "translateX(2px)" }} />
@@ -469,7 +469,7 @@ const css = {
     padding: "14px 16px", flexWrap: "wrap", pointerEvents: "none",
   },
   sitePill: {
-    backgroundColor: "#e8417a", color: "#fff",
+    backgroundColor: "var(--accent)", color: "#fff",
     padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 700,
   },
   titleText: { color: "#fff", fontSize: "13px", fontWeight: 600, textShadow: "0 1px 4px rgba(0,0,0,0.8)" },
@@ -482,7 +482,7 @@ const css = {
   skipBtn: {
     display: "flex", alignItems: "center", gap: "6px",
     background: "rgba(10,10,14,0.75)", backdropFilter: "blur(12px)",
-    border: "1px solid rgba(232,65,122,0.5)", color: "#fff",
+    border: "1px solid rgba(249,115,22,0.5)", color: "#fff",
     borderRadius: "8px", padding: "10px 16px", fontSize: "13px", fontWeight: 600,
     cursor: "pointer", fontFamily: "Inter,sans-serif",
     boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
@@ -506,7 +506,7 @@ const css = {
   ringWrap: { position: "relative" },
   nextLabel: { color: "#fff", fontSize: "15px", fontWeight: 600, margin: 0 },
   nextPlayBtn: {
-    background: "#e8417a", color: "#fff", border: "none",
+    background: "var(--accent)", color: "#fff", border: "none",
     borderRadius: "10px", padding: "10px 24px", fontSize: "14px", fontWeight: 700,
     cursor: "pointer", fontFamily: "Inter,sans-serif",
   },
@@ -554,8 +554,8 @@ const css = {
     position: "absolute", top: "50%",
     transform: "translate(-50%, -50%)",
     width: "14px", height: "14px", borderRadius: "50%",
-    backgroundColor: "#e8417a",
-    boxShadow: "0 0 8px rgba(232,65,122,0.7)",
+    backgroundColor: "var(--accent)",
+    boxShadow: "0 0 8px rgba(249,115,22,0.7)",
     transition: "left 0.1s linear",
   },
   controlRow: {
@@ -613,7 +613,7 @@ const css = {
     transition: "all 0.15s",
   },
   pillActive: {
-    background: "rgba(232,65,122,0.2)", border: "1px solid #e8417a",
-    color: "#e8417a",
+    background: "rgba(249,115,22,0.2)", border: "1px solid var(--accent)",
+    color: "var(--accent)",
   },
 };
