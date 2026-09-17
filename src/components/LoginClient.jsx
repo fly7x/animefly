@@ -25,8 +25,14 @@ export default function LoginClient() {
   return (
     <div style={s.wrap}>
       <div style={s.card}>
-        <h1 style={s.title}>Welcome Back</h1>
-        <p style={s.sub}>Log in to your Fly Anime account</p>
+        <div style={s.logoWrap}>
+          <svg width="100" height="28" viewBox="0 0 100 28" fill="none">
+            <text x="0" y="22" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="22" fill="var(--accent)">Fly</text>
+            <text x="42" y="22" fontFamily="Inter,Arial Black,sans-serif" fontWeight="900" fontSize="22" fill="#ffffff">Anime</text>
+          </svg>
+        </div>
+        <h1 style={s.title}>Welcome back</h1>
+        <p style={s.sub}>Log in to your account</p>
         {error && <p style={s.error}>{error}</p>}
         <form onSubmit={handleSubmit} style={s.form}>
           <label style={s.label}>Username or Email</label>
@@ -47,15 +53,16 @@ export default function LoginClient() {
 }
 
 const s = {
-  wrap: { minHeight: "100vh", backgroundColor: "#0e0e12", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "Inter,sans-serif" },
-  card: { backgroundColor: "#141418", border: "1px solid rgba(232,65,122,0.2)", borderRadius: "16px", padding: "40px 36px", width: "100%", maxWidth: "420px" },
+  wrap: { minHeight: "100vh", backgroundColor: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "Inter,sans-serif" },
+  card: { backgroundColor: "var(--bg-card)", border: "1px solid var(--border-md)", borderRadius: "16px", padding: "40px 36px", width: "100%", maxWidth: "420px" },
+  logoWrap: { marginBottom: "24px" },
   title: { color: "#fff", fontSize: "24px", fontWeight: 800, margin: "0 0 8px" },
   sub: { color: "#a0a0b0", fontSize: "14px", margin: "0 0 28px" },
-  error: { backgroundColor: "rgba(232,65,122,0.12)", border: "1px solid rgba(232,65,122,0.3)", color: "#e8417a", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px" },
+  error: { backgroundColor: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.3)", color: "var(--accent)", padding: "10px 14px", borderRadius: "8px", fontSize: "13px", marginBottom: "16px" },
   form: { display: "flex", flexDirection: "column", gap: "14px" },
   label: { color: "#a0a0b0", fontSize: "13px", fontWeight: 500 },
-  input: { backgroundColor: "#0e0e12", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "12px 14px", color: "#fff", fontSize: "14px", outline: "none", fontFamily: "Inter,sans-serif" },
-  btn: { backgroundColor: "#e8417a", color: "#fff", border: "none", borderRadius: "8px", padding: "13px", fontSize: "15px", fontWeight: 700, cursor: "pointer", marginTop: "6px", fontFamily: "Inter,sans-serif" },
+  input: { backgroundColor: "var(--bg)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "12px 14px", color: "#fff", fontSize: "14px", outline: "none", fontFamily: "Inter,sans-serif" },
+  btn: { backgroundColor: "var(--accent)", color: "#fff", border: "none", borderRadius: "8px", padding: "13px", fontSize: "15px", fontWeight: 700, cursor: "pointer", marginTop: "6px", fontFamily: "Inter,sans-serif" },
   foot: { color: "#606070", fontSize: "13px", textAlign: "center", marginTop: "16px" },
-  link: { color: "#e8417a", textDecoration: "none" },
+  link: { color: "var(--accent)", textDecoration: "none" },
 };
