@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./SpotlightBanner.module.css";
 
-/* Floating particle embers */
+/* Floating ember particles */
 function Ember({ index }) {
   const x    = (index * 137.5) % 100;
   const size = 1.5 + (index % 3) * 1.2;
@@ -58,7 +58,7 @@ export default function SpotlightBanner({ spotlights = [], loading = false }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-        >Summoned from the Abyss</motion.span>
+        >Always Growing</motion.span>
         <motion.h1
           className={styles.emptyTitle}
           initial={{ opacity: 0, y: 20 }}
@@ -70,13 +70,13 @@ export default function SpotlightBanner({ spotlights = [], loading = false }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.35 }}
-        >Thousands of anime await you. Stream free in HD, sub & dub.</motion.p>
+        >Thousands of anime to discover. Stream free in HD, sub &amp; dub.</motion.p>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <Link href="/browse?category=top-airing" className="btn-primary">Enter the Abyss</Link>
+          <Link href="/browse?category=top-airing" className="btn-primary">Browse All Anime</Link>
         </motion.div>
       </div>
     </div>
@@ -115,7 +115,6 @@ export default function SpotlightBanner({ spotlights = [], loading = false }) {
       <div className={styles.gradientBottom} />
       <div className={styles.gradientLeft}   />
       <div className={styles.gradientTop}    />
-      {/* Blood vignette */}
       <div className={styles.vignette}       />
 
       {/* Thumbnail strip */}
@@ -200,7 +199,7 @@ export default function SpotlightBanner({ spotlights = [], loading = false }) {
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link href={`/anime/${item.id}`} className={styles.detailsBtn}>Inspect the Condemned</Link>
+                <Link href={`/anime/${item.id}`} className={styles.detailsBtn}>View Details</Link>
               </motion.div>
             </div>
           </motion.div>
