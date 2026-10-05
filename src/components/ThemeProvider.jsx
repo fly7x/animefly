@@ -1,22 +1,16 @@
 "use client";
-import { useEffect, createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
-const THEMES = {
-  pink:   { accent: "#e8417a", accentHover: "#f0527f", bg: "#0e0e12", bgCard: "#141418", name: "Default Pink",    emoji: "🌸" },
-  green:  { accent: "#22c55e", accentHover: "#16a34a", bg: "#080f0a", bgCard: "#0f1a0f", name: "Dark Green",      emoji: "🌿" },
-  blue:   { accent: "#3b82f6", accentHover: "#2563eb", bg: "#080e14", bgCard: "#0d1520", name: "Ocean Blue",      emoji: "🌊" },
-  purple: { accent: "#a855f7", accentHover: "#9333ea", bg: "#0d0814", bgCard: "#140d1a", name: "Cosmic Purple",   emoji: "🔮" },
-  amber:  { accent: "#f59e0b", accentHover: "#d97706", bg: "#110e06", bgCard: "#1a1408", name: "Amber Gold",      emoji: "✨" },
-  teal:   { accent: "#14b8a6", accentHover: "#0d9488", bg: "#060f0f", bgCard: "#0a1818", name: "Midnight Teal",   emoji: "🌙" },
-  red:    { accent: "#ef4444", accentHover: "#dc2626", bg: "#100808", bgCard: "#1a0d0d", name: "Crimson",         emoji: "🔥" },
-};
-
-export const ThemeContext = createContext({ theme: "pink", setTheme: () => {} });
+export const ThemeContext = createContext({});
 export function useTheme() { return useContext(ThemeContext); }
-export { THEMES };
 
 export default function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("pink");
+  return (
+    <ThemeContext.Provider value={{}}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
 
   useEffect(() => {
     // Load from localStorage first (instant)
