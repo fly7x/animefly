@@ -337,6 +337,12 @@ input, select, textarea { font-family: var(--font-body); }
   background: var(--accent-dim);
 }
 
+.gradient-btn {
+  background: var(--accent-gradient) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE CONTAINER PADDING
    ═══════════════════════════════════════════════════════════ */
