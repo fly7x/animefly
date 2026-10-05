@@ -15,19 +15,21 @@
   --border-hi:     rgba(232,65,122,0.28);
   --border-purple: rgba(232,65,122,0.15);
 
-  --accent:        #f97316;
-  --accent-hover:  #ea6c0a;
-  --accent-soft:   rgba(249,115,22,0.18);
-  --accent-glow:   rgba(249,115,22,0.32);
-  --accent-dim:    rgba(249,115,22,0.08);
-  --accent-deep:   #c2570a;
-  --purple:        #f97316;
-  --purple-hover:  #ea6c0a;
-  --gold:          #f97316;
-  --border:        rgba(249,115,22,0.08);
-  --border-md:     rgba(249,115,22,0.16);
-  --border-hi:     rgba(249,115,22,0.28);
-  --shadow-accent: 0 4px 28px rgba(249,115,22,0.30);
+  --accent:        #f2660e;
+--accent-hover:  #ff7a1f;
+--accent-soft:   rgba(242,102,14,0.18);
+--accent-glow:   rgba(242,102,14,0.32);
+--accent-dim:    rgba(242,102,14,0.08);
+--accent-deep:   #c2570a;
+--accent-gradient: linear-gradient(135deg, #ec4899 0%, #f97316 100%);
+--purple:        #f2660e;
+--purple-hover:  #ff7a1f;
+--gold:          #f2660e;
+--border:        rgba(242,102,14,0.08);
+--border-md:     rgba(242,102,14,0.16);
+--border-hi:     rgba(242,102,14,0.28);
+--shadow-accent: 0 4px 28px rgba(242,102,14,0.30);
+
 
   /* ── Tertiary ── */
     --gold:          #f97316;
