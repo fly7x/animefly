@@ -3,16 +3,13 @@ import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
-import LandingGate from "@/components/LandingGate";
 import ThemeProvider from "@/components/ThemeProvider";
 
-export const viewport = {
-  themeColor: "#07060b",
-};
+export const viewport = { themeColor: "#07060b" };
 
 export const metadata = {
   title: { default: "Fly Anime — Watch Anime Free", template: "%s | Fly Anime" },
-  description: "Stream anime in HD. Sub & Dub available. No account required.",
+  description: "Stream anime in HD. Sub & Dub available.",
   keywords: ["anime", "watch anime", "fly-anime", "anime streaming", "free anime"],
   icons: { icon: "/favicon.svg" },
 };
@@ -26,9 +23,6 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           <AuthProvider>
-            <Suspense fallback={null}>
-              <LandingGate />
-            </Suspense>
             <Suspense fallback={null}>
               <Navbar />
             </Suspense>
