@@ -299,3 +299,68 @@
   transition: all var(--t-fast);
 }
 .abyssSecondaryBtn:hover { color: var(--text-1); border-color: rgba(192,57,77,0.35); }
+
+/* ── Glass sliding category tabs ── */
+.browseSwitcher {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.glassTabs {
+  position: relative;
+  display: inline-flex; gap: 2px;
+  padding: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+.glassTabs::-webkit-scrollbar { display: none; }
+
+.glassHighlight {
+  position: absolute;
+  top: 4px; bottom: 4px;
+  border-radius: 999px;
+  background: var(--accent-gradient, linear-gradient(135deg, #ec4899, #f97316));
+  box-shadow: 0 2px 14px var(--accent-glow);
+  z-index: 0;
+}
+
+.glassTab {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  padding: 9px 18px;
+  font-size: 13px; font-weight: 600;
+  color: var(--text-3);
+  border-radius: 999px;
+  transition: color var(--t-fast, 0.15s);
+}
+.glassTab:hover { color: var(--text-1); }
+.glassTabActive { color: #fff; }
+
+.browseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.browseEmpty { color: var(--text-3); font-size: 14px; padding: 24px 0; }
+
+@media (max-width: 640px) {
+  .browseGrid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .glassTab { padding: 8px 14px; font-size: 12px; }
+}
+
+.skeletonCard {
+  display: flex; flex-direction: column;
+  border-radius: var(--r-lg, 12px);
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+.skeletonPoster { aspect-ratio: 2/3; width: 100%; }

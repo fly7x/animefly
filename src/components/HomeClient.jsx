@@ -1,20 +1,60 @@
 "use client";
 import DiscordBanner from "@/components/DiscordBanner";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import { getRecentlyWatched } from "@/lib/watchProgress";
 import SpotlightBanner from "./SpotlightBanner";
-import Section from "./Section";
 import AnimeCard from "./AnimeCard";
 import styles from "./HomeClient.module.css";
+
+/**
+ * GlassTabs — an Instagram-style sliding pill switcher. A frosted-glass
+ * highlight glides behind whichever tab is active instead of each tab
+ * drawing its own background, so it reads as one smooth tab bar.
+ */
+function GlassTabs({ tabs, active, onChange }) {
+  const wrapRef = useRef(null);
+  const btnRefs = useRef({});
+  const [highlight, setHighlight] = useState({ left: 0, width: 0 });
+
+  useLayoutEffect(() => {
+    const el = btnRefs.current[active];
+    const wrap = wrapRef.current;
+    if (!el || !wrap) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    setHighlight({ left: elRect.left - wrapRect.left, width: elRect.width });
+  }, [active, tabs]);
+
+  return (
+    <div ref={wrapRef} className={styles.glassTabs}>
+      <motion.div
+        className={styles.glassHighlight}
+        animate={{ left: highlight.left, width: highlight.width }}
+        transition={{ type: "spring", stiffness: 420, damping: 38 }}
+      />
+      {tabs.map(t => (
+        <button
+          key={t.key}
+          ref={el => { btnRefs.current[t.key] = el; }}
+          className={`${styles.glassTab} ${active === t.key ? styles.glassTabActive : ""}`}
+          onClick={() => onChange(t.key)}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function HomeClient({ initialData }) {
   const [data,    setData]    = useState(initialData);
   const [loading, setLoading] = useState(!initialData);
   const [error,   setError]   = useState(null);
   const [recent,  setRecent]  = useState([]);
+  const [activeBrowseTab, setActiveBrowseTab] = useState("trending");
 
   useEffect(() => {
     const localHistory = getRecentlyWatched(10);
@@ -49,6 +89,14 @@ export default function HomeClient({ initialData }) {
   const topAiring  = data?.topAiringAnimes      || [];
   const favorites  = data?.mostFavoriteAnimes   || [];
   const top10Today = data?.top10Animes?.today   || [];
+
+  const BROWSE_TABS = [
+    { key: "trending",  label: "Trending",         animes: trending,  href: "/browse?category=top-airing" },
+    { key: "updated",   label: "Recently Updated",  animes: latest,    href: "/browse?category=recently-updated" },
+    { key: "airing",    label: "Top Airing",        animes: topAiring, href: "/browse?category=top-airing" },
+    { key: "favorited", label: "Most Favorited",    animes: favorites, href: "/browse?category=most-favorite" },
+  ];
+  const activeTabData = BROWSE_TABS.find(t => t.key === activeBrowseTab) || BROWSE_TABS[0];
 
   return (
     <div className={styles.page}>
@@ -111,9 +159,39 @@ export default function HomeClient({ initialData }) {
 
         {/* Left column */}
         <div className={styles.primaryCol}>
-          <Section title="Currently Trending"  animes={trending}  viewAllHref="/browse?category=top-airing"        loading={loading} />
-          <Section title="Recently Updated"    animes={latest}    viewAllHref="/browse?category=recently-updated"  loading={loading} />
-          <Section title="Most Favorited"      animes={favorites} viewAllHref="/browse?category=most-favorite"     loading={loading} />
+          <div className={styles.browseSwitcher}>
+            <GlassTabs tabs={BROWSE_TABS} active={activeBrowseTab} onChange={setActiveBrowseTab} />
+            <Link href={activeTabData.href} className={styles.viewAll}>
+              View All
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </Link>
+          </div>
+
+          {loading ? (
+            <div className={styles.browseGrid}>
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className={styles.skeletonCard}>
+                  <div className={`skeleton ${styles.skeletonPoster}`} />
+                </div>
+              ))}
+            </div>
+          ) : activeTabData.animes.length === 0 ? (
+            <p className={styles.browseEmpty}>Nothing here yet.</p>
+          ) : (
+            <motion.div
+              key={activeBrowseTab}
+              className={styles.browseGrid}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              {activeTabData.animes.map(anime => (
+                <AnimeCard key={anime.id} anime={anime} />
+              ))}
+            </motion.div>
+          )}
         </div>
 
         {/* Right column */}

@@ -1,9 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useTheme, THEMES } from "@/components/ThemeProvider";
 
 export default function SettingsPanel({ open, onClose }) {
-  const { theme, setTheme } = useTheme();
   const [user,   setUser]   = useState(null);
   const [msg,    setMsg]    = useState("");
 
@@ -44,27 +42,6 @@ export default function SettingsPanel({ open, onClose }) {
         </div>
 
         <div style={s.scroll}>
-
-          {/* ── Theme ── */}
-          <p style={s.sectionHead}>🎨 Accent Color</p>
-          <div style={s.themeGrid}>
-            {Object.entries(THEMES).map(([key, t]) => (
-              <button key={key} onClick={() => setTheme(key)} style={s.themeOpt} title={t.name}>
-                <div style={{
-                  width: "32px", height: "32px", borderRadius: "50%",
-                  backgroundColor: t.accent, flexShrink: 0,
-                  border: theme === key ? "3px solid #fff" : "3px solid transparent",
-                  boxShadow: theme === key ? `0 0 14px ${t.accent}` : "none",
-                  transition: "all 0.2s",
-                }} />
-                <span style={{ ...s.themeLabel, color: theme === key ? "#fff" : "#a0a0b0" }}>
-                  {t.emoji} {t.name}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          <div style={s.divider} />
 
           {/* ── Privacy & Account ── */}
           <p style={s.sectionHead}>🔒 Privacy & Account</p>

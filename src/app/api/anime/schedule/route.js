@@ -30,7 +30,7 @@ const SCHEDULE_QUERY = `
       ) {
         airingAt
         episode
-        media {
+        media(type: ANIME) {
           id
           title { romaji english native }
           coverImage { extraLarge large medium }
@@ -42,6 +42,7 @@ const SCHEDULE_QUERY = `
           averageScore
           popularity
           genres
+          countryOfOrigin
           studios(isMain: true) { nodes { name } }
           description(asHtml: false)
           season
@@ -53,6 +54,11 @@ const SCHEDULE_QUERY = `
     }
   }
 `;
+
+// Formats/origins we don't want showing up on an anime-only schedule page
+// (donghua/Chinese animation, live-action, music videos, etc.)
+const EXCLUDED_FORMATS = new Set(["MUSIC"]);
+const EXCLUDED_ORIGINS = new Set(["CN", "TW"]); // Chinese/Taiwanese donghua, not anime
 
 export async function GET() {
   try {
@@ -73,12 +79,14 @@ export async function GET() {
 
     for (const entry of allSchedules) {
       if (entry.media?.isAdult) continue;
+      const media = entry.media;
+      if (!media) continue;
+      if (EXCLUDED_FORMATS.has(media.format)) continue;
+      if (EXCLUDED_ORIGINS.has(media.countryOfOrigin)) continue;
       const date = new Date(entry.airingAt * 1000);
       const jsDay = date.getDay(); // 0=Sun
       const dayIdx = jsDay === 0 ? 6 : jsDay - 1; // convert to Mon=0
       const dayName = DAYS[dayIdx];
-      const media = entry.media;
-      if (!media) continue;
 
       grouped[dayName].push({
         airingAt: entry.airingAt,
