@@ -1,15 +1,5 @@
 "use client";
 
-const ACHIEVEMENTS = {
-  first_watch:  { label: "First Watch",    icon: "▶", color: "#f2660e", desc: "Watched your first episode" },
-  watched_10:   { label: "10 Episodes",    icon: "10", color: "#3b82f6", desc: "Watched 10 episodes" },
-  watched_50:   { label: "50 Episodes",    icon: "50", color: "#f59e0b", desc: "Watched 50 episodes" },
-  watched_100:  { label: "Century Club",   icon: "100", color: "#a855f7", desc: "Watched 100 episodes" },
-  streak_3:     { label: "On a Roll",      icon: "3", color: "#f97316", desc: "3-day watch streak" },
-  streak_7:     { label: "Week Warrior",   icon: "7", color: "#eab308", desc: "7-day watch streak" },
-  streak_30:    { label: "Monthly Master", icon: "30", color: "#f2660e", desc: "30-day watch streak" },
-};
-
 function FireIcon({ size = 24, color = "#f97316" }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
@@ -19,9 +9,9 @@ function FireIcon({ size = 24, color = "#f97316" }) {
   );
 }
 
-export { FireIcon, ACHIEVEMENTS };
+export { FireIcon };
 
-export default function StreakBadge({ streak, total, achievements = [], compact = false }) {
+export default function StreakBadge({ streak, total, compact = false }) {
   if (compact) {
     return (
       <div style={s.compact}>
@@ -47,27 +37,6 @@ export default function StreakBadge({ streak, total, achievements = [], compact 
           <p style={s.streakLabel}>Animes Finished</p>
         </div>
       </div>
-
-      {/* Achievements */}
-      {achievements.length > 0 && (
-        <div>
-          <p style={s.achHead}>Achievements</p>
-          <div style={s.achGrid}>
-            {achievements.map(a => {
-              const def = ACHIEVEMENTS[a.type];
-              if (!def) return null;
-              return (
-                <div key={a.type} style={s.achBadge} title={def.desc}>
-                  <div style={{ ...s.achIcon, backgroundColor: def.color + "22", border: `1px solid ${def.color}44` }}>
-                    <span style={{ fontSize: "18px" }}>{def.icon}</span>
-                  </div>
-                  <span style={s.achLabel}>{def.label}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

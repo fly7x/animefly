@@ -30,8 +30,9 @@ const SCHEDULE_QUERY = `
       ) {
         airingAt
         episode
-        media(type: ANIME) {
+        media {
           id
+          type
           title { romaji english native }
           coverImage { extraLarge large medium }
           bannerImage
@@ -81,6 +82,7 @@ export async function GET() {
       if (entry.media?.isAdult) continue;
       const media = entry.media;
       if (!media) continue;
+      if (media.type && media.type !== "ANIME") continue;
       if (EXCLUDED_FORMATS.has(media.format)) continue;
       if (EXCLUDED_ORIGINS.has(media.countryOfOrigin)) continue;
       const date = new Date(entry.airingAt * 1000);

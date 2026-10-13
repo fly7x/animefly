@@ -54,7 +54,21 @@
   font-weight: 600;
   text-decoration: none;
   width: fit-content;
+  margin-bottom: 12px;
 }
+
+.shoutout {
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+.shoutoutLink {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.shoutoutLink:hover { text-decoration: underline; }
 
 /* ── Link columns ── */
 .linksGrid {

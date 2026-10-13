@@ -26,7 +26,7 @@ export default function ProfileClient() {
   const [saving,     setSaving]     = useState(false);
   const [history,    setHistory]    = useState([]);
   const [watchlist,  setWatchlist]  = useState([]);
-  const [stats,      setStats]      = useState({ streak: 0, total: 0, achievements: [] });
+  const [stats,      setStats]      = useState({ streak: 0, total: 0 });
   const [avatars,    setAvatars]    = useState(FALLBACK_AVATARS);
 
   useEffect(() => {
@@ -123,8 +123,8 @@ export default function ProfileClient() {
         <button style={s.logoutBtn} onClick={logout}>Logout</button>
       </div>
 
-      {/* ── Streak + Achievements ── */}
-      <StreakBadge streak={stats.streak} total={stats.total} achievements={stats.achievements} />
+      {/* ── Streak ── */}
+      <StreakBadge streak={stats.streak} total={stats.total} />
 
       {/* ── Avatar Picker ── */}
       {showPicker && (

@@ -57,6 +57,12 @@ export default function Footer() {
             </svg>
             Join our Discord
           </a>
+          <p className={styles.shoutout}>
+            Big thanks to Zia for helping out with this site — check out{" "}
+            <a href="https://animedex.fun" target="_blank" rel="noopener noreferrer" className={styles.shoutoutLink}>
+              animedex.fun
+            </a>
+          </p>
         </div>
 
         {/* Links */}

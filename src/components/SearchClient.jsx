@@ -59,8 +59,8 @@ export default function SearchClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className={styles.heroLabel}>Peer into the Void</p>
-        <h1 className={styles.heroTitle}>Name Your Obsession</h1>
+        <p className={styles.heroLabel}>Search</p>
+        <h1 className={styles.heroTitle}>Find Your Next Watch</h1>
 
         <form className={styles.searchBar} onSubmit={handleSubmit}>
           <div className={styles.inputWrap}>

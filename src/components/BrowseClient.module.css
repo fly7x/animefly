@@ -70,19 +70,21 @@
   box-shadow: 0 0 6px var(--accent-glow);
 }
 
-.genreGrid { display: flex; flex-wrap: wrap; gap: 6px; }
+.genreGrid { display: flex; flex-direction: column; gap: 2px; }
 .genreBtn {
-  padding: 5px 11px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border-md); border-radius: 99px;
-  font-size: 11px; color: var(--text-2);
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 11px;
+  background: transparent;
+  border: none; border-radius: var(--r-md);
+  font-size: 13px; color: var(--text-2);
   cursor: pointer; transition: all var(--t-fast);
 }
-.genreBtn:hover { border-color: var(--accent-glow); color: var(--text-1); }
+.genreBtn:hover { background: rgba(255,255,255,0.06); color: var(--text-1); }
 .genreActive {
   background: var(--accent-dim) !important;
-  border-color: var(--accent-glow) !important;
-  color: var(--accent) !important;
+  color: var(--text-1) !important;
 }
 
 /* ── Main ── */
@@ -162,16 +164,14 @@
 }
 .ellipsis { width: 24px; text-align: center; color: var(--text-4); font-size: 13px; }
 
-/* ── Responsive — sidebar stays visible, just moves above the grid and
-   scrolls horizontally instead of being hidden behind a toggle ── */
+/* ── Responsive — sidebar stays visible (no "Filter" toggle), stacked full
+   width above the grid: a wide Categories block, Genres rows underneath ── */
 @media (max-width: 860px) {
   .layout { grid-template-columns: 1fr; gap: 18px; }
-  .sidebar { position: static; flex-direction: row; overflow-x: auto; scrollbar-width: none; }
-  .sidebar::-webkit-scrollbar { display: none; }
-  .sideBlock { flex: 0 0 auto; min-width: 240px; }
+  .sidebar { position: static; width: 100%; }
+  .sideBlock { width: 100%; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
 }
 @media (max-width: 560px) {
   .grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 9px; }
-  .sideBlock { min-width: 220px; }
 }

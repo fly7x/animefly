@@ -12,7 +12,7 @@ const CATS = [
   { label: "Most Favorite",    value: "most-favorite" },
   { label: "Upcoming",         value: "upcoming" },
   { label: "Recently Updated", value: "recently-updated" },
-  { label: "Completed",        value: "completed" },
+  { label: "Finished Airing",  value: "completed" },
 ];
 
 const GENRES = [
