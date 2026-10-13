@@ -77,7 +77,7 @@ export default function RegisterClient() {
           </>
         ) : (
           <>
-            <div style={{ fontSize: "40px", textAlign: "center", marginBottom: "12px" }}>✉️</div>
+            
             <h1 style={s.title}>Check your email</h1>
             <p style={s.sub}>We sent a 6-digit code to <strong style={{ color: "#fff" }}>{form.email}</strong></p>
             {error && <p style={s.error}>{error}</p>}

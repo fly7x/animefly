@@ -1,13 +1,13 @@
 "use client";
 
 const ACHIEVEMENTS = {
-  first_watch:  { label: "First Watch",    icon: "▶",  color: "#e8417a", desc: "Watched your first episode" },
-  watched_10:   { label: "10 Episodes",    icon: "📺", color: "#3b82f6", desc: "Watched 10 episodes" },
-  watched_50:   { label: "50 Episodes",    icon: "⭐", color: "#f59e0b", desc: "Watched 50 episodes" },
-  watched_100:  { label: "Century Club",   icon: "💯", color: "#a855f7", desc: "Watched 100 episodes" },
-  streak_3:     { label: "On a Roll",      icon: "🔥", color: "#f97316", desc: "3-day watch streak" },
-  streak_7:     { label: "Week Warrior",   icon: "⚡", color: "#eab308", desc: "7-day watch streak" },
-  streak_30:    { label: "Monthly Master", icon: "👑", color: "#e8417a", desc: "30-day watch streak" },
+  first_watch:  { label: "First Watch",    icon: "▶", color: "#f2660e", desc: "Watched your first episode" },
+  watched_10:   { label: "10 Episodes",    icon: "10", color: "#3b82f6", desc: "Watched 10 episodes" },
+  watched_50:   { label: "50 Episodes",    icon: "50", color: "#f59e0b", desc: "Watched 50 episodes" },
+  watched_100:  { label: "Century Club",   icon: "100", color: "#a855f7", desc: "Watched 100 episodes" },
+  streak_3:     { label: "On a Roll",      icon: "3", color: "#f97316", desc: "3-day watch streak" },
+  streak_7:     { label: "Week Warrior",   icon: "7", color: "#eab308", desc: "7-day watch streak" },
+  streak_30:    { label: "Monthly Master", icon: "30", color: "#f2660e", desc: "30-day watch streak" },
 };
 
 function FireIcon({ size = 24, color = "#f97316" }) {

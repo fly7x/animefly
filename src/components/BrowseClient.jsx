@@ -1,18 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import AnimeCard from "./AnimeCard";
 import styles from "./BrowseClient.module.css";
 
 const CATS = [
-  { label: "Top Airing",       value: "top-airing",       icon: "🔥" },
-  { label: "Most Popular",     value: "most-popular",      icon: "📈" },
-  { label: "Most Favorite",    value: "most-favorite",     icon: "⭐" },
-  { label: "Upcoming",         value: "upcoming",          icon: "📅" },
-  { label: "Recently Updated", value: "recently-updated",  icon: "🕐" },
-  { label: "Completed",        value: "completed",         icon: "✅" },
+  { label: "Top Airing",       value: "top-airing" },
+  { label: "Most Popular",     value: "most-popular" },
+  { label: "Most Favorite",    value: "most-favorite" },
+  { label: "Upcoming",         value: "upcoming" },
+  { label: "Recently Updated", value: "recently-updated" },
+  { label: "Completed",        value: "completed" },
 ];
 
 const GENRES = [
@@ -46,7 +46,6 @@ export default function BrowseClient() {
   const router = useRouter();
   const cat    = sp.get("category") || "top-airing";
   const page   = parseInt(sp.get("page") || "1");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,7 +58,7 @@ export default function BrowseClient() {
       .catch(e => { setError(e.message); setLoading(false); });
   }, [cat, page]);
 
-  function setCategory(c) { router.push(`/browse?category=${c}&page=1`); setSidebarOpen(false); }
+  function setCategory(c) { router.push(`/browse?category=${c}&page=1`); }
   function goPage(p)       { router.push(`/browse?category=${cat}&page=${p}`); window.scrollTo({ top: 0 }); }
 
   const animes     = data?.animes || [];
@@ -73,73 +72,58 @@ export default function BrowseClient() {
   return (
     <div className={`container ${styles.page}`}>
 
-      {/* Mobile filter toggle */}
-      <button className={styles.filterToggle} onClick={() => setSidebarOpen(v => !v)}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="18" x2="12" y2="18"/>
-        </svg>
-        {sidebarOpen ? "Close" : "Filter"}
-      </button>
-
       <div className={styles.layout}>
 
-        {/* ── Sidebar ── */}
-        <AnimatePresence>
-          {(true) && (
-            <motion.aside
-              className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
-              initial={false}
-            >
-              {/* Categories */}
-              <div className={styles.sideBlock}>
-                <p className={styles.sideLabel}>
-                  <span className={styles.sideLabelAccent} />
-                  Categories
-                </p>
-                <ul className={styles.catList}>
-                  {CATS.map(c => (
-                    <li key={c.value}>
-                      <motion.button
-                        className={`${styles.catBtn} ${c.value === cat ? styles.catActive : ""}`}
-                        onClick={() => setCategory(c.value)}
-                        whileHover={{ x: 3 }}
-                        whileTap={{ scale: 0.97 }}
-                      >
-                        <span className={styles.catIcon}>{c.icon}</span>
-                        {c.label}
-                        {c.value === cat && <span className={styles.catActiveDot} />}
-                      </motion.button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* ── Sidebar — always visible, no "Filter" click needed ── */}
+        <aside className={styles.sidebar}>
+          {/* Categories */}
+          <div className={styles.sideBlock}>
+            <p className={styles.sideLabel}>
+              <span className={styles.sideLabelAccent} />
+              Categories
+            </p>
+            <ul className={styles.catList}>
+              {CATS.map(c => (
+                <li key={c.value}>
+                  <motion.button
+                    className={`${styles.catBtn} ${c.value === cat ? styles.catActive : ""}`}
+                    onClick={() => setCategory(c.value)}
+                    whileHover={{ x: 3 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <span className={styles.catIcon} />
+                    {c.label}
+                    {c.value === cat && <span className={styles.catActiveDot} />}
+                  </motion.button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              {/* Genres */}
-              <div className={styles.sideBlock}>
-                <p className={styles.sideLabel}>
-                  <span className={styles.sideLabelAccent} />
-                  Genres
-                </p>
-                <div className={styles.genreGrid}>
-                  {GENRES.map(g => {
-                    const slug = `genre/${g.toLowerCase().replace(/ /g, "-")}`;
-                    return (
-                      <motion.button
-                        key={g}
-                        className={`${styles.genreBtn} ${cat === slug ? styles.genreActive : ""}`}
-                        onClick={() => setCategory(slug)}
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.96 }}
-                      >
-                        {g}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.aside>
-          )}
-        </AnimatePresence>
+          {/* Genres */}
+          <div className={styles.sideBlock}>
+            <p className={styles.sideLabel}>
+              <span className={styles.sideLabelAccent} />
+              Genres
+            </p>
+            <div className={styles.genreGrid}>
+              {GENRES.map(g => {
+                const slug = `genre/${g.toLowerCase().replace(/ /g, "-")}`;
+                return (
+                  <motion.button
+                    key={g}
+                    className={`${styles.genreBtn} ${cat === slug ? styles.genreActive : ""}`}
+                    onClick={() => setCategory(slug)}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                  >
+                    {g}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
 
         {/* ── Main ── */}
         <div className={styles.main}>
@@ -160,7 +144,7 @@ export default function BrowseClient() {
           {/* Error */}
           {error && !loading && (
             <div className={styles.errMsg}>
-              <p>☠ {error}</p>
+              <p>{error}</p>
               <button onClick={() => window.location.reload()}>Retry</button>
             </div>
           )}

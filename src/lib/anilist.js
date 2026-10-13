@@ -322,7 +322,7 @@ export async function getCategoryPage(category, page = 1) {
 
   const data = await query(`
     query($page: Int) {
-      Page(page: $page, perPage: 24) {
+      Page(page: $page, perPage: 42) {
         pageInfo { total currentPage lastPage hasNextPage }
         media(sort: ${sortEnum}, type: ANIME, isAdult: false ${statusFilter ? ", " + statusFilter : ""} ${genreFilter ? ", " + genreFilter : ""}, format_not_in: [MUSIC]) {
           ${MEDIA_FRAGMENT}
@@ -339,6 +339,29 @@ export async function getCategoryPage(category, page = 1) {
     category,
     currentPage: Number(page),
   };
+}
+
+// ── Avatar characters ─────────────────────────────────────────────────────────
+// Pulls the most-favorited anime characters straight from AniList's own CDN
+// (s4.anilist.co — the same host that already serves every poster on this
+// site, so it's proven to load). This replaces a third-party avatar CDN that
+// started blocking hotlinked requests.
+export async function getAvatarCharacters() {
+  const data = await query(`
+    query {
+      Page(page: 1, perPage: 48) {
+        characters(sort: FAVOURITES_DESC) {
+          id
+          name { full }
+          image { large }
+        }
+      }
+    }
+  `);
+  const chars = data?.Page?.characters || [];
+  return chars
+    .filter(c => c?.image?.large)
+    .map(c => ({ url: c.image.large, label: c.name?.full || "Avatar" }));
 }
 
 export async function getAniListEpisodeMeta(anilistId) {

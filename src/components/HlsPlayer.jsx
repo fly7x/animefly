@@ -1078,7 +1078,7 @@ export default function HlsPlayer({
 
   if (!src) return (
     <div className={styles.wrapper}>
-      <div className={styles.empty}><span>🎬</span><p>No stream source loaded</p></div>
+      <div className={styles.empty}><span>—</span><p>No stream source loaded</p></div>
     </div>
   );
 
@@ -1118,7 +1118,7 @@ export default function HlsPlayer({
 
       {error && (
         <div className={styles.errorOv}>
-          <span>⚠️</span>
+          <span>!</span>
           <p>{error}</p>
         </div>
       )}
@@ -1331,7 +1331,7 @@ export default function HlsPlayer({
                         <button
                           className={styles.subStyleToggle}
                           onClick={() => setShowSubStyle(v => !v)}
-                        >Style ✦</button>
+                        >Style</button>
                       </div>
                       <div className={styles.settingsBtns}>
                         <button

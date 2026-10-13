@@ -250,7 +250,7 @@ export default function AnimePlayer({
 
       {/* ── Top info badge ── */}
       <div style={{ ...css.topBadge, opacity: showCtrl ? 1 : 0, transition: "opacity 0.4s" }}>
-        <span style={css.sitePill}>🎌 Fly Anime</span>
+        <span style={css.sitePill}>Fly Anime</span>
         {animeTitle && <span style={css.titleText}>{animeTitle}</span>}
         {episodeName && <span style={css.epText}>EP {episodeNumber} · {episodeName}</span>}
       </div>

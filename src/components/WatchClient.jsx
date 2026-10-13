@@ -187,7 +187,7 @@ export default function WatchClient({ animeId, epSlug }) {
             </div>
           )}
           {!epsLoading && !currentEp && (
-            <div className={styles.playerState}><span>⚠</span><p>Episode not found.</p></div>
+            <div className={styles.playerState}><span>!</span><p>Episode not found.</p></div>
           )}
 
           {currentEp && (

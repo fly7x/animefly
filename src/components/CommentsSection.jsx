@@ -207,10 +207,10 @@ export default function CommentsSection({ animeId, animeName, episodeId }) {
                   {/* Actions */}
                   <div style={s.commentActions}>
                     <button style={s.actionBtn} onClick={() => react(c.id, 1)}>
-                      👍 {c.likes || 0}
+                      ▲ {c.likes || 0}
                     </button>
                     <button style={s.actionBtn} onClick={() => react(c.id, 0)}>
-                      👎 {c.dislikes || 0}
+                      ▼ {c.dislikes || 0}
                     </button>
                     {user && (
                       <button
@@ -282,10 +282,10 @@ export default function CommentsSection({ animeId, animeName, episodeId }) {
                         <p style={s.commentText}>{r.content}</p>
                         <div style={s.commentActions}>
                           <button style={s.actionBtn} onClick={() => react(r.id, 1)}>
-                            👍 {r.likes || 0}
+                            ▲ {r.likes || 0}
                           </button>
                           <button style={s.actionBtn} onClick={() => react(r.id, 0)}>
-                            👎 {r.dislikes || 0}
+                            ▼ {r.dislikes || 0}
                           </button>
                           {user?.id === r.user_id && (
                             <button style={{ ...s.actionBtn, color: "#606070", marginLeft: "auto" }}
@@ -312,7 +312,7 @@ function SpoilerText({ text }) {
   return show
     ? <p style={{ color: "#c0c0c8", fontSize: "14px", lineHeight: 1.6, margin: "6px 0", cursor: "pointer" }} onClick={() => setShow(false)}>{text}</p>
     : <p onClick={() => setShow(true)} style={{ backgroundColor: "rgba(232,65,122,0.1)", color: "var(--accent,#e8417a)", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "13px", margin: "6px 0", userSelect: "none" }}>
-        ⚠ Spoiler — click to reveal
+        Spoiler — click to reveal
       </p>;
 }
 

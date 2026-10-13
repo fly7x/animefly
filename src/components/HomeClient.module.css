@@ -308,22 +308,18 @@
 
 .glassTabs {
   position: relative;
-  display: inline-flex; gap: 2px;
+  display: flex; flex-wrap: wrap; gap: 4px;
   padding: 4px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 999px;
+  border-radius: 20px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  overflow-x: auto;
-  scrollbar-width: none;
   max-width: 100%;
 }
-.glassTabs::-webkit-scrollbar { display: none; }
 
 .glassHighlight {
   position: absolute;
-  top: 4px; bottom: 4px;
   border-radius: 999px;
   background: var(--accent-gradient, linear-gradient(135deg, #ec4899, #f97316));
   box-shadow: 0 2px 14px var(--accent-glow);
@@ -352,8 +348,9 @@
 .browseEmpty { color: var(--text-3); font-size: 14px; padding: 24px 0; }
 
 @media (max-width: 640px) {
-  .browseGrid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-  .glassTab { padding: 8px 14px; font-size: 12px; }
+  .browseGrid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .glassTabs { border-radius: 16px; gap: 6px; }
+  .glassTab { padding: 8px 13px; font-size: 12px; flex: 0 0 auto; }
 }
 
 .skeletonCard {

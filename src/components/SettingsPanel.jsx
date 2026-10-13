@@ -44,7 +44,7 @@ export default function SettingsPanel({ open, onClose }) {
         <div style={s.scroll}>
 
           {/* ── Privacy & Account ── */}
-          <p style={s.sectionHead}>🔒 Privacy & Account</p>
+          <p style={s.sectionHead}>Privacy & Account</p>
 
           {msg && <p style={s.successMsg}>{msg}</p>}
 

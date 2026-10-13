@@ -198,7 +198,7 @@ export default function ScheduleClient() {
               </div>
             ) : schedError ? (
               <div className={styles.errorState}>
-                <span>⚠</span>
+                <span>!</span>
                 <p>Failed to load schedule: {schedError}</p>
               </div>
             ) : !schedule?.[activeDay]?.length ? (

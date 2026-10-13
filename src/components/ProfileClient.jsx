@@ -4,31 +4,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import StreakBadge from "@/components/StreakBadge";
 
-const AVATARS = [
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/zoro_normal/av-zz-01.jpeg",  label: "Zoro 1" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/zoro_normal/av-zz-02.jpeg",  label: "Zoro 2" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/zoro_normal/av-zz-03.jpeg",  label: "Zoro 3" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/zoro_normal/av-zz-04.jpeg",  label: "Zoro 4" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/zoro_normal/av-zz-05.jpeg",  label: "Zoro 5" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/demon_splayer/File1.jpg",    label: "Tanjiro" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/demon_splayer/File2.jpg",    label: "Nezuko" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/demon_splayer/File5.jpg",    label: "Rengoku" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/demon_splayer/File8.jpg",    label: "Muzan" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/demon_splayer/File15.jpg",   label: "Urokodaki" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/jujutsu_kaisen/File1.png",   label: "Yuji" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/jujutsu_kaisen/File4.png",   label: "Gojo" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/jujutsu_kaisen/File5.png",   label: "Sukuna" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/chainsaw/01.png",            label: "Denji" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/chainsaw/02.png",            label: "Power" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/chainsaw/04.png",            label: "Makima" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/spy_family/03.png",          label: "Anya" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/spy_family/01.png",          label: "Loid" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/spy_family/02.png",          label: "Yor" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/one_piece/user-1.jpeg",      label: "Luffy" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/one_piece/user-5.jpeg",      label: "Sanji" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/one_piece/user-10.jpeg",     label: "Ace" },
-  { url: "https://cdn.noitatnemucod.net/avatar/100x100/one_piece/user-11.jpeg",     label: "Shanks" },
-];
+// Last-resort fallback only, used if /api/avatars can't be reached. DiceBear
+// is a dependable always-on generator so the picker is never empty.
+const FALLBACK_AVATARS = Array.from({ length: 24 }, (_, i) => ({
+  url: `https://api.dicebear.com/9.x/adventurer/png?seed=flyanime-${i}&backgroundType=gradientLinear`,
+  label: `Avatar ${i + 1}`,
+}));
 
 
 export default function ProfileClient() {
@@ -46,6 +27,7 @@ export default function ProfileClient() {
   const [history,    setHistory]    = useState([]);
   const [watchlist,  setWatchlist]  = useState([]);
   const [stats,      setStats]      = useState({ streak: 0, total: 0, achievements: [] });
+  const [avatars,    setAvatars]    = useState(FALLBACK_AVATARS);
 
   useEffect(() => {
     fetch("/api/auth/me").then(r => r.json()).then(d => {
@@ -57,6 +39,9 @@ export default function ProfileClient() {
     fetch("/api/history").then(r => r.json()).then(d => setHistory(d.history || []));
     fetch("/api/watchlist").then(r => r.json()).then(d => setWatchlist(d.watchlist || []));
     fetch("/api/auth/stats").then(r => r.json()).then(d => setStats(d));
+    fetch("/api/avatars").then(r => r.json())
+      .then(d => { if (d.avatars?.length) setAvatars(d.avatars); })
+      .catch(() => {});
   }, [router]);
 
   async function updateAvatar(url) {
@@ -149,7 +134,7 @@ export default function ProfileClient() {
             <button style={s.closeBtn} onClick={() => setShowPicker(false)}>✕</button>
           </div>
           <div style={s.avatarGrid}>
-            {AVATARS.map((a, i) => (
+            {avatars.map((a, i) => (
               <div key={i} style={s.avatarOpt} onClick={() => updateAvatar(a.url)} title={a.label}>
                 <img src={a.url} alt={a.label} style={s.avatarOptImg}
                   onError={e => { e.target.style.display = "none"; }} />
@@ -224,7 +209,7 @@ export default function ProfileClient() {
                   {a.poster
                     ? <img src={a.poster} alt={a.anime_name} style={s.cardImg}
                         onError={e => { e.target.style.display = "none"; }} />
-                    : <div style={s.cardImgPlaceholder}>🎌</div>}
+                    : <div style={s.cardImgPlaceholder} />}
                   <div style={s.cardBody}>
                     <p style={s.cardTitle}>{a.anime_name}</p>
                     <p style={s.cardMeta}>{a.type === "watching" ? "Watching" : a.type === "completed" ? "Completed" : a.type === "on_hold" ? "On Hold" : a.type === "dropped" ? "Dropped" : "Plan to Watch"}</p>
@@ -255,7 +240,7 @@ export default function ProfileClient() {
                   {a.poster
                     ? <img src={a.poster} alt={a.anime_name} style={s.cardImg}
                         onError={e => { e.target.style.display = "none"; }} />
-                    : <div style={s.cardImgPlaceholder}>🎌</div>}
+                    : <div style={s.cardImgPlaceholder} />}
                   <div style={s.cardBody}>
                     <p style={s.cardTitle}>{a.anime_name}</p>
                     <p style={s.cardMeta}>Episode {a.episode_number}</p>
@@ -283,7 +268,7 @@ const s = {
   username: { color: "#fff", fontSize: "22px", fontWeight: 800, margin: "0 0 4px" },
   email: { color: "#606070", fontSize: "13px", margin: 0 },
   logoutBtn: { marginLeft: "auto", backgroundColor: "transparent", border: "1px solid rgba(255,255,255,0.1)", color: "#a0a0b0", borderRadius: "8px", padding: "8px 16px", fontSize: "13px", cursor: "pointer", fontFamily: "Inter,sans-serif" },
-  picker: { backgroundColor: "#141418", border: "1px solid rgba(232,65,122,0.2)", borderRadius: "14px", padding: "20px", marginBottom: "28px" },
+  picker: { backgroundColor: "#141418", border: "1px solid rgba(249,115,22,0.2)", borderRadius: "14px", padding: "20px", marginBottom: "28px" },
   pickerHead: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" },
   pickerTitle: { color: "#fff", fontSize: "16px", fontWeight: 700, margin: 0 },
   closeBtn: { backgroundColor: "transparent", border: "none", color: "#a0a0b0", fontSize: "20px", cursor: "pointer" },

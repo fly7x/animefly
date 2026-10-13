@@ -17,22 +17,35 @@ import styles from "./HomeClient.module.css";
 function GlassTabs({ tabs, active, onChange }) {
   const wrapRef = useRef(null);
   const btnRefs = useRef({});
-  const [highlight, setHighlight] = useState({ left: 0, width: 0 });
+  const [highlight, setHighlight] = useState({ left: 0, top: 0, width: 0, height: 0 });
 
+  // Tracks top as well as left so the highlight still lands correctly if the
+  // tabs wrap onto a second row on narrow phones — scroll-only tabs on a
+  // small screen would otherwise clip the last label off the edge.
   useLayoutEffect(() => {
-    const el = btnRefs.current[active];
-    const wrap = wrapRef.current;
-    if (!el || !wrap) return;
-    const wrapRect = wrap.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-    setHighlight({ left: elRect.left - wrapRect.left, width: elRect.width });
+    function measure() {
+      const el = btnRefs.current[active];
+      const wrap = wrapRef.current;
+      if (!el || !wrap) return;
+      const wrapRect = wrap.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      setHighlight({
+        left: elRect.left - wrapRect.left,
+        top: elRect.top - wrapRect.top,
+        width: elRect.width,
+        height: elRect.height,
+      });
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, [active, tabs]);
 
   return (
     <div ref={wrapRef} className={styles.glassTabs}>
       <motion.div
         className={styles.glassHighlight}
-        animate={{ left: highlight.left, width: highlight.width }}
+        animate={{ left: highlight.left, top: highlight.top, width: highlight.width, height: highlight.height }}
         transition={{ type: "spring", stiffness: 420, damping: 38 }}
       />
       {tabs.map(t => (
@@ -73,7 +86,11 @@ export default function HomeClient({ initialData }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className={styles.errSigil}>⚔</div>
+        <div className={styles.errSigil}>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/>
+          </svg>
+        </div>
         <h2 className={styles.errTitle}>Something went wrong</h2>
         <p className={styles.errMsg}>{error}</p>
         <button className={styles.retryBtn} onClick={() => window.location.reload()}>

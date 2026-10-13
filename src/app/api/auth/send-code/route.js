@@ -43,11 +43,11 @@ export async function POST(request) {
       subject: "Fly Anime — Password Change Verification Code",
       html: `
         <div style="font-family:Inter,sans-serif;max-width:480px;margin:0 auto;background:#0e0e12;color:#fff;padding:32px;border-radius:16px;">
-          <h2 style="color:#e8417a;margin:0 0 8px;">Fly Anime</h2>
+          <h2 style="color:#f2660e;margin:0 0 8px;">Fly Anime</h2>
           <p style="color:#a0a0b0;margin:0 0 28px;font-size:14px;">Password change request</p>
           <p style="font-size:15px;margin:0 0 16px;">Your verification code is:</p>
-          <div style="background:#141418;border:1px solid rgba(232,65,122,0.3);border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
-            <span style="font-size:36px;font-weight:900;letter-spacing:12px;color:#e8417a;">${code}</span>
+          <div style="background:#141418;border:1px solid rgba(249,115,22,0.3);border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
+            <span style="font-size:36px;font-weight:900;letter-spacing:12px;color:#f2660e;">${code}</span>
           </div>
           <p style="color:#606070;font-size:13px;margin:0;">This code expires in 10 minutes. If you didn't request this, ignore this email.</p>
         </div>

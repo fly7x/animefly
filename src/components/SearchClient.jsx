@@ -138,14 +138,13 @@ export default function SearchClient() {
 
         {error && !loading && (
           <motion.div key="error" className={styles.emptyState} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <p className={styles.emptyIcon}>⚠</p>
+            <p className={styles.emptyIcon}>!</p>
             <p className={styles.emptyText}>{error}</p>
           </motion.div>
         )}
 
         {!loading && !error && q && animes.length === 0 && (
           <motion.div key="empty" className={styles.emptyState} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <p className={styles.emptyIcon}>🔍</p>
             <p className={styles.emptyTitle}>No Results Found</p>
             <p className={styles.emptyText}>Try A Different Keyword Or Check Spelling.</p>
           </motion.div>

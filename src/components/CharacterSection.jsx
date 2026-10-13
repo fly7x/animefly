@@ -181,10 +181,10 @@ export default function CommentsSection({ animeId, animeName, episodeId }) {
                   : <p style={s.commentText}>{c.content}</p>}
                 <div style={s.commentActions}>
                   <button style={s.actionBtn} onClick={() => react(c.id, 1)}>
-                    👍 {c.likes || 0}
+                    ▲ {c.likes || 0}
                   </button>
                   <button style={s.actionBtn} onClick={() => react(c.id, 0)}>
-                    👎 {c.dislikes || 0}
+                    ▼ {c.dislikes || 0}
                   </button>
                   {user?.id === c.user_id && (
                     <button style={{ ...s.actionBtn, color: "#606070", marginLeft: "auto" }}
@@ -206,26 +206,26 @@ function SpoilerText({ text }) {
   const [show, setShow] = useState(false);
   return show
     ? <p style={{ color: "#c0c0c8", fontSize: "14px", lineHeight: 1.6, margin: "6px 0", cursor: "pointer" }} onClick={() => setShow(false)}>{text}</p>
-    : <p onClick={() => setShow(true)} style={{ backgroundColor: "rgba(232,65,122,0.1)", color: "#e8417a", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "13px", margin: "6px 0", userSelect: "none" }}>⚠ Spoiler — click to reveal</p>;
+    : <p onClick={() => setShow(true)} style={{ backgroundColor: "rgba(242,102,14,0.12)", color: "#f2660e", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "13px", margin: "6px 0", userSelect: "none" }}>Spoiler — click to reveal</p>;
 }
 
 const s = {
   wrap: { padding: "24px 0", fontFamily: "Inter,sans-serif" },
   headerBar: { display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px", flexWrap: "wrap" },
-  title: { color: "#e8417a", fontSize: "20px", fontWeight: 800, margin: 0 },
+  title: { color: "#f2660e", fontSize: "20px", fontWeight: 800, margin: 0 },
   filterBtn: { display: "flex", alignItems: "center", backgroundColor: "#141418", border: "1px solid rgba(255,255,255,0.1)", color: "#a0a0b0", borderRadius: "8px", padding: "7px 12px", fontSize: "13px", cursor: "pointer", fontFamily: "Inter,sans-serif" },
   dropMenu: { position: "absolute", top: "calc(100% + 4px)", left: 0, zIndex: 50, backgroundColor: "#1a1a20", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "6px", minWidth: "160px", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" },
   dropItem: { display: "block", width: "100%", textAlign: "left", backgroundColor: "transparent", border: "none", color: "#a0a0b0", padding: "8px 12px", borderRadius: "6px", fontSize: "13px", cursor: "pointer", fontFamily: "Inter,sans-serif" },
   countBadge: { display: "flex", alignItems: "center", gap: "5px", color: "#a0a0b0", fontSize: "14px", fontWeight: 600 },
   sortSelect: { marginLeft: "auto", backgroundColor: "#141418", border: "1px solid rgba(255,255,255,0.1)", color: "#a0a0b0", borderRadius: "8px", padding: "7px 10px", fontSize: "13px", cursor: "pointer", fontFamily: "Inter,sans-serif", outline: "none" },
   loginPrompt: { color: "#a0a0b0", fontSize: "14px", marginBottom: "20px" },
-  loginLink: { color: "#e8417a", textDecoration: "none", fontWeight: 600 },
+  loginLink: { color: "#f2660e", textDecoration: "none", fontWeight: 600 },
   postForm: { marginBottom: "24px" },
   textarea: { width: "100%", backgroundColor: "#141418", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "10px", padding: "12px 14px", color: "#fff", fontSize: "14px", resize: "vertical", fontFamily: "Inter,sans-serif", outline: "none", boxSizing: "border-box" },
   postFormBottom: { display: "flex", alignItems: "center", gap: "12px", marginTop: "8px" },
   spoilerLabel: { color: "#a0a0b0", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" },
-  postBtn: { marginLeft: "auto", backgroundColor: "#e8417a", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 20px", fontSize: "13px", fontWeight: 700, cursor: "pointer", fontFamily: "Inter,sans-serif" },
-  errText: { color: "#e8417a", fontSize: "12px" },
+  postBtn: { marginLeft: "auto", backgroundColor: "#f2660e", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 20px", fontSize: "13px", fontWeight: 700, cursor: "pointer", fontFamily: "Inter,sans-serif" },
+  errText: { color: "#f2660e", fontSize: "12px" },
   empty: { color: "#606070", fontSize: "14px", padding: "20px 0" },
   emptyWrap: { textAlign: "center", padding: "48px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" },
   emptyTitle: { color: "#a0a0b0", fontSize: "16px", fontWeight: 600, margin: 0 },
@@ -234,7 +234,7 @@ const s = {
   comment: { display: "flex", gap: "14px", padding: "16px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" },
   avatarCol: { flexShrink: 0 },
   avatarImg: { width: "42px", height: "42px", borderRadius: "50%", objectFit: "cover" },
-  avatarFallback: { width: "42px", height: "42px", borderRadius: "50%", backgroundColor: "#e8417a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "16px" },
+  avatarFallback: { width: "42px", height: "42px", borderRadius: "50%", backgroundColor: "#f2660e", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "16px" },
   commentBody: { flex: 1, minWidth: 0 },
   commentMeta: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px", flexWrap: "wrap" },
   commentUser: { color: "#fff", fontWeight: 700, fontSize: "14px" },

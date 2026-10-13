@@ -30,7 +30,7 @@ const s = {
   wrap: { display: "block", textDecoration: "none", width: "100%", margin: "28px 0", borderRadius: "16px", overflow: "hidden", position: "relative", cursor: "pointer", border: "1px solid rgba(88,101,242,0.35)" },
   bg: { position: "absolute", inset: 0, background: "linear-gradient(135deg,#0f0f2e 0%,#1a1a5e 35%,#1e1e6a 55%,#0a0a20 100%)", zIndex: 0 },
   glowLeft: { position: "absolute", left: "-30px", top: "-30px", width: "220px", height: "220px", borderRadius: "50%", background: "radial-gradient(circle,rgba(88,101,242,0.35) 0%,transparent 70%)", zIndex: 1, pointerEvents: "none" },
-  glowRight: { position: "absolute", right: "-30px", bottom: "-30px", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle,rgba(232,65,122,0.25) 0%,transparent 70%)", zIndex: 1, pointerEvents: "none" },
+  glowRight: { position: "absolute", right: "-30px", bottom: "-30px", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle,rgba(249,115,22,0.25) 0%,transparent 70%)", zIndex: 1, pointerEvents: "none" },
   content: { position: "relative", zIndex: 2, display: "flex", alignItems: "center", gap: "20px", padding: "24px 28px", flexWrap: "wrap" },
   icon: { width: "58px", height: "58px", borderRadius: "16px", backgroundColor: "#5865F2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 24px rgba(88,101,242,0.55)" },
   text: { flex: 1, minWidth: "200px" },
