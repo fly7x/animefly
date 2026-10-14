@@ -16,8 +16,9 @@ const CATS = [
 ];
 
 const GENRES = [
-  "Action","Adventure","Comedy","Drama","Fantasy","Horror",
-  "Mystery","Romance","Sci-Fi","Slice of Life","Sports","Supernatural","Thriller",
+  "Action","Adventure","Comedy","Drama","Fantasy","Horror","Mahou Shoujo",
+  "Mecha","Music","Mystery","Psychological","Romance","Sci-Fi","Slice of Life",
+  "Sports","Supernatural","Thriller",
 ];
 
 function buildPages(current, total) {
@@ -68,7 +69,7 @@ export default function BrowseClient() {
   const isGenre    = cat.startsWith("genre/");
   const genreSlug  = isGenre ? cat.replace("genre/", "") : null;
   const activeLabel = isGenre
-    ? genreSlug?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())
+    ? GENRES.find(g => g.toLowerCase().replace(/ /g, "-") === genreSlug) || genreSlug?.replace(/-/g, " ")
     : CATS.find(c => c.value === cat)?.label || cat;
 
   return (

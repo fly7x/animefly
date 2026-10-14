@@ -11,8 +11,8 @@ const EMPTY = {
 };
 
 export async function GET() {
-  const key      = "home";
-  const staleKey = "home_stale";
+  const key      = "home_v3";
+  const staleKey = "home_stale_v3";
 
   const cached = await getCachedAsync(key);
   if (cached) return NextResponse.json(cached);

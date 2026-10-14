@@ -195,13 +195,6 @@ export async function getHomePage() {
       upcoming: Page(page: 1, perPage: 15) {
         media(sort: POPULARITY_DESC, type: ANIME, isAdult: false, status: NOT_YET_RELEASED) { ${MEDIA_FRAGMENT} }
       }
-      recentlyUpdated: Page(page: 1, perPage: 50) {
-        airingSchedules(airingAt_greater: ${Math.floor(Date.now()/1000) - 3*86400}, airingAt_lesser: ${Math.floor(Date.now()/1000)}, sort: TIME_DESC) {
-          episode
-          airingAt
-          media { ${MEDIA_FRAGMENT} }
-        }
-      }
     }
   `);
 
@@ -210,7 +203,26 @@ export async function getHomePage() {
   // metadata is edited constantly, so we use actual airing times instead.)
   const seenIds = new Set();
   const recentRaw = [];
-  for (const entry of data?.recentlyUpdated?.airingSchedules || []) {
+  let recentSchedules = [];
+  try {
+    const nowS = Math.floor(Date.now() / 1000);
+    const rd = await query(`
+      query {
+        Page(page: 1, perPage: 50) {
+          airingSchedules(airingAt_greater: ${nowS - 3 * 86400}, airingAt_lesser: ${nowS}, sort: TIME_DESC) {
+            episode
+            airingAt
+            media { ${MEDIA_FRAGMENT} }
+          }
+        }
+      }
+    `);
+    recentSchedules = rd?.Page?.airingSchedules || [];
+  } catch {}
+  // Fallback if the schedule lookup fails: popular currently-airing shows
+  // (never the old metadata-updated sort, which showed obscure kids shows).
+  if (!recentSchedules.length) recentSchedules = (data?.popular?.media || []).map(media => ({ media }));
+  for (const entry of recentSchedules) {
     const m = entry?.media;
     if (!m || seenIds.has(m.id)) continue;
     if (m.isAdult) continue;
@@ -343,8 +355,10 @@ export async function getCategoryPage(category, page = 1) {
 
   let genre = null;
   if (category.startsWith("genre/")) {
-    genre = category.replace("genre/", "").replace(/-/g, " ")
-      .replace(/\b\w/g, c => c.toUpperCase());
+    const slug = category.replace("genre/", "");
+    const KNOWN = ["Action","Adventure","Comedy","Drama","Fantasy","Horror","Mahou Shoujo","Mecha","Music","Mystery","Psychological","Romance","Sci-Fi","Slice of Life","Sports","Supernatural","Thriller"];
+    genre = KNOWN.find(g => g.toLowerCase().replace(/ /g, "-") === slug)
+      || slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
   }
 
   const cfg = queryMap[category] || { sort: "POPULARITY_DESC" };
