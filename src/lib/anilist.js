@@ -84,6 +84,17 @@ async function query(gql, variables = {}) {
 }
 
 // Fragment reused across queries
+// Formats/origins we don't want showing up anywhere on this anime-only site
+// (donghua/Chinese & Taiwanese animation, music videos, etc.)
+const EXCLUDED_FORMATS = new Set(["MUSIC"]);
+const EXCLUDED_ORIGINS = new Set(["CN", "TW"]);
+
+function excludeNonAnime(mediaList) {
+  return (mediaList || []).filter(
+    m => m && !EXCLUDED_ORIGINS.has(m.countryOfOrigin) && !EXCLUDED_FORMATS.has(m.format)
+  );
+}
+
 const MEDIA_FRAGMENT = `
   id
   idMal
@@ -93,6 +104,7 @@ const MEDIA_FRAGMENT = `
   bannerImage
   format
   status
+  countryOfOrigin
   episodes
   duration
   season
@@ -188,11 +200,11 @@ export async function getHomePage() {
     }
   `);
 
-  const trending        = (data?.trending?.media        || []).map(normalizeMedia).filter(Boolean);
-  const popular         = (data?.popular?.media          || []).map(normalizeMedia).filter(Boolean);
-  const topRated        = (data?.topRated?.media         || []).map(normalizeMedia).filter(Boolean);
-  const upcoming        = (data?.upcoming?.media         || []).map(normalizeMedia).filter(Boolean);
-  const recentlyUpdated = (data?.recentlyUpdated?.media  || []).map(normalizeMedia).filter(Boolean);
+  const trending        = excludeNonAnime(data?.trending?.media).map(normalizeMedia).filter(Boolean);
+  const popular         = excludeNonAnime(data?.popular?.media).map(normalizeMedia).filter(Boolean);
+  const topRated        = excludeNonAnime(data?.topRated?.media).map(normalizeMedia).filter(Boolean);
+  const upcoming        = excludeNonAnime(data?.upcoming?.media).map(normalizeMedia).filter(Boolean);
+  const recentlyUpdated = excludeNonAnime(data?.recentlyUpdated?.media).map(normalizeMedia).filter(Boolean);
 
   return {
     spotlightAnimes:       trending.slice(0, 8).map((a, i) => ({ ...a, rank: i + 1, otherInfo: [a.type, a.season, a.status].filter(Boolean) })),
@@ -217,7 +229,7 @@ export async function searchAniList(q, page = 1) {
 
   const page_data = data?.Page;
   return {
-    animes:      (page_data?.media || []).map(normalizeMedia).filter(Boolean),
+    animes:      excludeNonAnime(page_data?.media).map(normalizeMedia).filter(Boolean),
     totalPages:  page_data?.pageInfo?.lastPage  ?? 1,
     hasNextPage: page_data?.pageInfo?.hasNextPage ?? false,
     currentPage: Number(page),
@@ -320,9 +332,12 @@ export async function getCategoryPage(category, page = 1) {
   const statusFilter = cfg.status ? "status: " + cfg.status : "";
   const genreFilter  = genre ? "genre: \"" + genre + "\"" : "";
 
+  // AniList's GraphQL API hard-caps perPage at 50 (requesting more throws
+  // a validation error), so 50 is the most we can show per page in a
+  // single request. This is already a big bump from the old 42.
   const data = await query(`
     query($page: Int) {
-      Page(page: $page, perPage: 42) {
+      Page(page: $page, perPage: 50) {
         pageInfo { total currentPage lastPage hasNextPage }
         media(sort: ${sortEnum}, type: ANIME, isAdult: false ${statusFilter ? ", " + statusFilter : ""} ${genreFilter ? ", " + genreFilter : ""}, format_not_in: [MUSIC]) {
           ${MEDIA_FRAGMENT}
@@ -333,7 +348,7 @@ export async function getCategoryPage(category, page = 1) {
 
   const pg = data?.Page;
   return {
-    animes:      (pg?.media || []).map(normalizeMedia).filter(Boolean),
+    animes:      excludeNonAnime(pg?.media).map(normalizeMedia).filter(Boolean),
     totalPages:  pg?.pageInfo?.lastPage  ?? 1,
     hasNextPage: pg?.pageInfo?.hasNextPage ?? false,
     category,

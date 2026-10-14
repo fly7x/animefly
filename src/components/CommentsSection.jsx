@@ -24,8 +24,8 @@ export default function CommentsSection({ animeId, animeName, episodeId }) {
     const url = epFilter === "all"
       ? `/api/comments?anime_id=${animeId}&episode_id=all`
       : `/api/comments?anime_id=${animeId}&episode_id=${epId}`;
-    const res  = await fetch(url);
-    const data = await res.json();
+    let data = {};
+    try { const res = await fetch(url); data = await res.json(); } catch {}
     let list = data.comments || [];
     if (sort === "Oldest")     list = [...list].reverse();
     if (sort === "Most Liked") list = [...list].sort((a, b) => (b.likes || 0) - (a.likes || 0));
@@ -42,17 +42,20 @@ export default function CommentsSection({ animeId, animeName, episodeId }) {
     e.preventDefault();
     if (!content.trim()) return;
     setPosting(true); setError("");
-    const res  = await fetch("/api/comments", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        anime_id: animeId, anime_name: animeName,
-        episode_id: epId, content, is_spoiler: isSpoiler,
-      }),
-    });
-    const data = await res.json();
+    let data;
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          anime_id: animeId, anime_name: animeName,
+          episode_id: epId, content, is_spoiler: isSpoiler,
+        }),
+      });
+      data = await res.json();
+    } catch { data = { error: "Could not post comment. Try again." }; }
     setPosting(false);
     if (data.error) { setError(data.error); return; }
-    setContent(""); setIsSpoiler(false); fetchComments();
+    setContent(""); setIsSpoiler(false); setEpFilter("all"); fetchComments();
   }
 
   async function postReply(e, parentId, parentUsername) {

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import StreakBadge from "@/components/StreakBadge";
+import { getRecentlyWatched } from "@/lib/watchProgress";
 
 // Last-resort fallback only, used if /api/avatars can't be reached. DiceBear
 // is a dependable always-on generator so the picker is never empty.
@@ -36,7 +37,40 @@ export default function ProfileClient() {
       setNewUsername(d.user.username);
       setLoading(false);
     });
-    fetch("/api/history").then(r => r.json()).then(d => setHistory(d.history || []));
+    fetch("/api/history").then(r => r.json()).then(d => {
+      const dbHistory = d.history || [];
+      // Merge in whatever's shown on the Home page's "Continue Watching"
+      // (saved to this browser's localStorage) so both pages stay in sync,
+      // even for episodes that haven't made it to the server yet.
+      let local = [];
+      try { local = getRecentlyWatched(20); } catch {}
+      const merged = new Map();
+      for (const h of dbHistory) {
+        merged.set(String(h.anime_id), {
+          anime_id: h.anime_id,
+          anime_name: h.anime_name,
+          poster: h.poster,
+          episode_number: h.episode_number,
+          epSlug: null,
+          sortTime: h.updated_at ? new Date(h.updated_at).getTime() : 0,
+        });
+      }
+      for (const l of local) {
+        const key = String(l.animeId);
+        const existing = merged.get(key);
+        if (!existing || (l.watchedAt || 0) > existing.sortTime) {
+          merged.set(key, {
+            anime_id: l.animeId,
+            anime_name: l.animeName,
+            poster: l.poster,
+            episode_number: l.epNumber,
+            epSlug: l.epSlug || null,
+            sortTime: l.watchedAt || 0,
+          });
+        }
+      }
+      setHistory([...merged.values()].sort((a, b) => b.sortTime - a.sortTime));
+    });
     fetch("/api/watchlist").then(r => r.json()).then(d => setWatchlist(d.watchlist || []));
     fetch("/api/auth/stats").then(r => r.json()).then(d => setStats(d));
     fetch("/api/avatars").then(r => r.json())
@@ -236,7 +270,7 @@ export default function ProfileClient() {
           ) : (
             <div style={s.grid}>
               {history.map(a => (
-                <div key={a.id || a.anime_id} style={s.card}>
+                <div key={a.anime_id} style={s.card}>
                   {a.poster
                     ? <img src={a.poster} alt={a.anime_name} style={s.cardImg}
                         onError={e => { e.target.style.display = "none"; }} />
@@ -244,7 +278,7 @@ export default function ProfileClient() {
                   <div style={s.cardBody}>
                     <p style={s.cardTitle}>{a.anime_name}</p>
                     <p style={s.cardMeta}>Episode {a.episode_number}</p>
-                    <Link href={`/watch/${a.anime_id}/ep-${a.episode_number}`} style={s.cardLink}>
+                    <Link href={`/watch/${a.anime_id}/${a.epSlug || `ep-${a.episode_number}`}`} style={s.cardLink}>
                       Resume →
                     </Link>
                   </div>

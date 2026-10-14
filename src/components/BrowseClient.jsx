@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
 import AnimeCard from "./AnimeCard";
 import styles from "./BrowseClient.module.css";
@@ -50,6 +50,8 @@ export default function BrowseClient() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
+  const [catOpen,   setCatOpen]   = useState(true);
+  const [genreOpen, setGenreOpen] = useState(true);
 
   useEffect(() => {
     setLoading(true); setError(null); setData(null);
@@ -78,50 +80,102 @@ export default function BrowseClient() {
         <aside className={styles.sidebar}>
           {/* Categories */}
           <div className={styles.sideBlock}>
-            <p className={styles.sideLabel}>
+            <button
+              type="button"
+              className={styles.sideLabel}
+              onClick={() => setCatOpen(v => !v)}
+              aria-expanded={catOpen}
+            >
               <span className={styles.sideLabelAccent} />
               Categories
-            </p>
-            <ul className={styles.catList}>
-              {CATS.map(c => (
-                <li key={c.value}>
-                  <motion.button
-                    className={`${styles.catBtn} ${c.value === cat ? styles.catActive : ""}`}
-                    onClick={() => setCategory(c.value)}
-                    whileHover={{ x: 3 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <span className={styles.catIcon} />
-                    {c.label}
-                    {c.value === cat && <span className={styles.catActiveDot} />}
-                  </motion.button>
-                </li>
-              ))}
-            </ul>
+              <motion.span
+                className={styles.chevron}
+                animate={{ rotate: catOpen ? 180 : 0 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </motion.span>
+            </button>
+            <AnimatePresence initial={false}>
+              {catOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <ul className={styles.catList}>
+                    {CATS.map(c => (
+                      <li key={c.value}>
+                        <motion.button
+                          className={`${styles.catBtn} ${c.value === cat ? styles.catActive : ""}`}
+                          onClick={() => setCategory(c.value)}
+                          whileHover={{ x: 3 }}
+                          whileTap={{ scale: 0.97 }}
+                        >
+                          <span className={styles.catIcon} />
+                          {c.label}
+                          {c.value === cat && <span className={styles.catActiveDot} />}
+                        </motion.button>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Genres */}
           <div className={styles.sideBlock}>
-            <p className={styles.sideLabel}>
+            <button
+              type="button"
+              className={styles.sideLabel}
+              onClick={() => setGenreOpen(v => !v)}
+              aria-expanded={genreOpen}
+            >
               <span className={styles.sideLabelAccent} />
               Genres
-            </p>
-            <div className={styles.genreGrid}>
-              {GENRES.map(g => {
-                const slug = `genre/${g.toLowerCase().replace(/ /g, "-")}`;
-                return (
-                  <motion.button
-                    key={g}
-                    className={`${styles.genreBtn} ${cat === slug ? styles.genreActive : ""}`}
-                    onClick={() => setCategory(slug)}
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.96 }}
-                  >
-                    {g}
-                  </motion.button>
-                );
-              })}
-            </div>
+              <motion.span
+                className={styles.chevron}
+                animate={{ rotate: genreOpen ? 180 : 0 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </motion.span>
+            </button>
+            <AnimatePresence initial={false}>
+              {genreOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className={styles.genreGrid}>
+                    {GENRES.map(g => {
+                      const slug = `genre/${g.toLowerCase().replace(/ /g, "-")}`;
+                      return (
+                        <motion.button
+                          key={g}
+                          className={`${styles.genreBtn} ${cat === slug ? styles.genreActive : ""}`}
+                          onClick={() => setCategory(slug)}
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.96 }}
+                        >
+                          {g}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </aside>
 

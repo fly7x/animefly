@@ -118,8 +118,8 @@
   align-items: start;
 }
 
-.primaryCol { display: flex; flex-direction: column; }
-.sideCol    { display: flex; flex-direction: column; gap: 28px; position: sticky; top: calc(var(--nav-h) + 20px); }
+.primaryCol { display: flex; flex-direction: column; min-width: 0; }
+.sideCol    { display: flex; flex-direction: column; gap: 28px; position: sticky; top: calc(var(--nav-h) + 20px); min-width: 0; }
 
 /* ── Top 10 card ── */
 .top10Card {
@@ -347,6 +347,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
+  min-width: 0;
+  width: 100%;
 }
 
 .browseEmpty { color: var(--text-3); font-size: 14px; padding: 24px 0; }

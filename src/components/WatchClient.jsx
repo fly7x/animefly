@@ -361,10 +361,9 @@ export default function WatchClient({ animeId, epSlug }) {
         )}
 
         <CommentsSection
-          animeId={anilistId}
-          malId={moreInfo?.malId}
-          epNumber={epNumber}
-          title={anime?.name}
+          animeId={String(anilistId || animeId)}
+          animeName={anime?.name}
+          episodeId={String(epNumber || "0")}
         />
       </div>
 

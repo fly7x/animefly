@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
 import { useAuth } from "@/components/AuthProvider";
@@ -33,6 +33,7 @@ export default function Navbar() {
   const debounce = useRef(null);
   const router   = useRouter();
   const pathname = usePathname();
+  const currentSp = useSearchParams();
   const { user } = useAuth();
   const [showSettings, setShowSettings] = useState(false);
 
@@ -70,9 +71,19 @@ export default function Navbar() {
   ];
 
   const isActive = (href) => {
-    const base = href.split("?")[0];
+    const [base, qs] = href.split("?");
     if (base === "/") return pathname === "/";
-    return pathname.startsWith(base);
+    if (!pathname.startsWith(base)) return false;
+    // Both "Explore" and "Popular" point at /browse with a different
+    // ?category= — compare that too so only the matching one lights up.
+    if (qs) {
+      const linkCategory = new URLSearchParams(qs).get("category");
+      if (linkCategory) {
+        const currentCategory = currentSp.get("category") || "top-airing";
+        return currentCategory === linkCategory;
+      }
+    }
+    return true;
   };
 
   return (
