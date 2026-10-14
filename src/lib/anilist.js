@@ -105,6 +105,7 @@ const MEDIA_FRAGMENT = `
   format
   status
   countryOfOrigin
+  isAdult
   episodes
   duration
   season
@@ -194,17 +195,36 @@ export async function getHomePage() {
       upcoming: Page(page: 1, perPage: 15) {
         media(sort: POPULARITY_DESC, type: ANIME, isAdult: false, status: NOT_YET_RELEASED) { ${MEDIA_FRAGMENT} }
       }
-      recentlyUpdated: Page(page: 1, perPage: 15) {
-        media(sort: UPDATED_AT_DESC, type: ANIME, isAdult: false, status: RELEASING) { ${MEDIA_FRAGMENT} }
+      recentlyUpdated: Page(page: 1, perPage: 50) {
+        airingSchedules(airingAt_greater: ${Math.floor(Date.now()/1000) - 3*86400}, airingAt_lesser: ${Math.floor(Date.now()/1000)}, sort: TIME_DESC) {
+          episode
+          airingAt
+          media { ${MEDIA_FRAGMENT} }
+        }
       }
     }
   `);
+
+  // "Recently Updated" = real, popular anime that just aired a new episode.
+  // (Sorting by AniList's UPDATED_AT surfaced obscure kids/mascot shows whose
+  // metadata is edited constantly, so we use actual airing times instead.)
+  const seenIds = new Set();
+  const recentRaw = [];
+  for (const entry of data?.recentlyUpdated?.airingSchedules || []) {
+    const m = entry?.media;
+    if (!m || seenIds.has(m.id)) continue;
+    if (m.isAdult) continue;
+    if (!["TV", "ONA", "TV_SHORT"].includes(m.format)) continue;
+    if ((m.popularity || 0) < 15000) continue;
+    seenIds.add(m.id);
+    recentRaw.push(m);
+  }
 
   const trending        = excludeNonAnime(data?.trending?.media).map(normalizeMedia).filter(Boolean);
   const popular         = excludeNonAnime(data?.popular?.media).map(normalizeMedia).filter(Boolean);
   const topRated        = excludeNonAnime(data?.topRated?.media).map(normalizeMedia).filter(Boolean);
   const upcoming        = excludeNonAnime(data?.upcoming?.media).map(normalizeMedia).filter(Boolean);
-  const recentlyUpdated = excludeNonAnime(data?.recentlyUpdated?.media).map(normalizeMedia).filter(Boolean);
+  const recentlyUpdated = excludeNonAnime(recentRaw).slice(0, 18).map(normalizeMedia).filter(Boolean);
 
   return {
     spotlightAnimes:       trending.slice(0, 8).map((a, i) => ({ ...a, rank: i + 1, otherInfo: [a.type, a.season, a.status].filter(Boolean) })),
